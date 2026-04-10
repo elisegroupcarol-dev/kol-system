@@ -3,59 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KOLaborate | 雲端一體化管理系統</title>
+    <title>KOLaborate | 進階財務管理系統</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f1f5f9; color: #1e293b; }
-        .status-pill { padding: 2px 10px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
-        .currency-font { font-family: 'Inter', sans-serif; font-weight: 700; }
-        .modal-bg { background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); }
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        .status-pill { padding: 4px 12px; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; }
+        .card-shadow { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05); }
+        .drawer-blur { backdrop-filter: blur(4px); background-color: rgba(15, 23, 42, 0.5); }
     </style>
 </head>
 <body>
 
     <div class="min-h-screen flex flex-col">
-        <nav class="bg-white border-b border-slate-200 px-8 py-4 flex justify-between items-center sticky top-0 z-30 shadow-sm">
+        <nav class="bg-white border-b border-slate-200 px-8 py-4 flex justify-between items-center sticky top-0 z-40 shadow-sm">
             <div class="flex items-center gap-3">
                 <div class="bg-indigo-600 p-2 rounded-xl text-white shadow-lg">
-                    <i data-lucide="layout-dashboard" size="24"></i>
+                    <i data-lucide="bar-chart-3" size="24"></i>
                 </div>
                 <div>
                     <h1 class="text-xl font-bold tracking-tight text-slate-800">KOLaborate</h1>
-                    <p class="text-[10px] text-slate-400 font-medium uppercase tracking-widest leading-none">Management System</p>
+                    <p class="text-[10px] text-indigo-500 font-bold uppercase tracking-widest leading-none">Pro Management</p>
                 </div>
             </div>
-            <div class="flex items-center gap-2">
-                <button onclick="openAddModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-lg shadow-indigo-200">
-                    <i data-lucide="plus-circle" size="18"></i> 新增名單
-                </button>
-                <button onclick="fetchData()" class="text-slate-500 hover:bg-slate-50 p-2 rounded-lg transition">
-                    <i data-lucide="refresh-cw" size="18"></i>
+            <div class="flex items-center gap-4">
+                <button onclick="openModal('add')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition flex items-center gap-2 shadow-md">
+                    <i data-lucide="plus-circle" size="18"></i> 新增開團名單
                 </button>
             </div>
         </nav>
 
-        <main class="flex-1 p-8 space-y-6">
-            <div id="statsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                </div>
+        <main class="flex-1 p-8 space-y-6 max-w-7xl mx-auto w-full">
+            <div id="statsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
 
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-                <div class="px-8 py-4 border-b border-slate-100">
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="px-8 py-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                     <div class="relative w-full max-w-md">
                         <i data-lucide="search" class="absolute left-4 top-3 text-slate-400" size="18"></i>
-                        <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="快速搜尋團主..." class="pl-12 pr-6 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm w-full outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
+                        <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="搜尋姓名、IG 或負責人..." class="pl-12 pr-6 py-2.5 bg-white border border-slate-200 rounded-2xl text-sm w-full outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
                     </div>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left">
                         <thead>
-                            <tr class="bg-slate-50/50">
-                                <th class="px-8 py-4 text-[11px] font-bold text-slate-400 uppercase">團主資訊</th>
-                                <th class="px-6 py-4 text-[11px] font-bold text-slate-400 uppercase text-right">銷售/分潤</th>
-                                <th class="px-6 py-4 text-[11px] font-bold text-slate-400 uppercase text-center">進度</th>
-                                <th class="px-6 py-4 text-[11px] font-bold text-slate-400 uppercase text-right">操作</th>
+                            <tr class="text-[11px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100">
+                                <th class="px-8 py-4">團主資訊</th>
+                                <th class="px-6 py-4">負責人</th>
+                                <th class="px-6 py-4 text-right">銷售/分潤 (20%)</th>
+                                <th class="px-6 py-4 text-center">狀態</th>
+                                <th class="px-8 py-4 text-right">管理</th>
                             </tr>
                         </thead>
                         <tbody id="tableBody" class="divide-y divide-slate-100"></tbody>
@@ -65,37 +62,57 @@
         </main>
     </div>
 
-    <div id="addModal" class="fixed inset-0 z-50 invisible transition-all duration-300">
-        <div class="absolute inset-0 modal-bg" onclick="closeAddModal()"></div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-white rounded-3xl shadow-2xl p-8">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-bold text-slate-800">新增團主名單</h2>
-                <button onclick="closeAddModal()" class="text-slate-400"><i data-lucide="x"></i></button>
+    <div id="dataModal" class="fixed inset-0 z-50 invisible transition-all duration-300">
+        <div class="absolute inset-0 drawer-blur" onclick="closeModal()"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-full max-w-md bg-white shadow-2xl transition-transform duration-300 translate-x-full p-8 overflow-y-auto" id="modalContent">
+            <div class="flex justify-between items-center mb-8">
+                <h2 id="modalTitle" class="text-2xl font-bold text-slate-800">新增名單</h2>
+                <button onclick="closeModal()" class="p-2 hover:bg-slate-100 rounded-full transition text-slate-400"><i data-lucide="x"></i></button>
             </div>
-            <form id="addForm" onsubmit="submitForm(event)" class="space-y-4">
-                <div class="grid grid-cols-2 gap-4">
-                    <input type="text" name="name" placeholder="團主姓名" required class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-                    <input type="text" name="ig" placeholder="IG 帳號 (@...)" class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+            
+            <form id="dataForm" onsubmit="handleFormSubmit(event)" class="space-y-6">
+                <input type="hidden" name="original_name" id="original_name">
+                
+                <div class="space-y-4">
+                    <div class="p-4 bg-slate-50 rounded-2xl space-y-4">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase">基本資料</label>
+                        <input type="text" name="name" id="f_name" placeholder="團主姓名" required class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+                        <input type="text" name="ig" id="f_ig" placeholder="IG 帳號 (@...)" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+                        <input type="text" name="phone" id="f_phone" placeholder="聯絡電話" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+                    </div>
+
+                    <div class="p-4 bg-blue-50/50 rounded-2xl space-y-4">
+                        <label class="block text-[10px] font-bold text-blue-400 uppercase">財務資訊 (自動計算分潤)</label>
+                        <div class="space-y-2">
+                            <span class="text-xs text-slate-500">銷售金額</span>
+                            <input type="number" name="sales_amount" id="f_sales" oninput="autoCalcProfit(this.value)" placeholder="請輸入銷售金額" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 outline-none font-bold">
+                        </div>
+                        <div class="space-y-2">
+                            <span class="text-xs text-slate-500">分潤金額 (20%)</span>
+                            <input type="number" name="profit_amount" id="f_profit" readonly class="w-full bg-slate-100 border border-slate-200 rounded-xl p-3 text-sm text-emerald-600 font-bold outline-none cursor-not-allowed">
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-slate-50 rounded-2xl space-y-4">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase">流程資訊</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <input type="text" name="date_start" id="f_start" placeholder="開始日期" class="bg-white border border-slate-200 rounded-xl p-3 text-sm outline-none">
+                            <input type="text" name="date_end" id="f_end" placeholder="結束日期" class="bg-white border border-slate-200 rounded-xl p-3 text-sm outline-none">
+                        </div>
+                        <select name="status_labor" id="f_status" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm outline-none">
+                            <option value="未發送">未發送</option>
+                            <option value="已發送">已發送</option>
+                            <option value="已回簽">已回簽</option>
+                        </select>
+                        <input type="text" name="referrer" id="f_referrer" placeholder="負責邀約人" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm outline-none">
+                    </div>
+
+                    <textarea name="remark" id="f_remark" placeholder="備註說明..." rows="3" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 text-sm outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
                 </div>
-                <input type="text" name="phone" placeholder="電話" class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm w-full outline-none focus:ring-2 focus:ring-indigo-500">
-                <div class="grid grid-cols-2 gap-4">
-                    <input type="text" name="date_start" placeholder="開始日期" class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-                    <input type="text" name="date_end" placeholder="結束日期" class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <input type="number" name="sales_amount" placeholder="銷售金額" class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-                    <input type="number" name="profit_amount" placeholder="分潤金額" class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <select name="status_labor" class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm outline-none">
-                        <option value="未發送">未發送</option>
-                        <option value="已發送">已發送</option>
-                        <option value="已回簽">已回簽</option>
-                    </select>
-                    <input type="text" name="referrer" placeholder="負責邀約人" class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm outline-none">
-                </div>
-                <textarea name="remark" placeholder="備註說明" rows="2" class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm w-full outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-                <button type="submit" id="submitBtn" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-bold shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition">確認新增名單</button>
+
+                <button type="submit" id="submitBtn" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-bold shadow-xl shadow-indigo-100 hover:bg-indigo-700 transition transform active:scale-95">
+                    儲存變更並同步雲端
+                </button>
             </form>
         </div>
     </div>
@@ -103,9 +120,19 @@
     <script>
         lucide.createIcons();
 
-        const SHEETDB_URL = 'https://sheetdb.io/api/v1/cyqmbi2i9zshu'; // <--- 貼上妳的 API 網址
+        // ---------------------------------------------------------
+        // 重要：請在此貼上妳的 SheetDB API 網址
+        // ---------------------------------------------------------
+        const SHEETDB_URL = 'https://sheetdb.io/api/v1/cyqmbi2i9zshu'; 
 
         let allData = [];
+
+        // 自動計算 20% 分潤
+        function autoCalcProfit(val) {
+            const sales = parseFloat(val) || 0;
+            const profit = Math.round(sales * 0.2); // 銷售額的 20%
+            document.getElementById('f_profit').value = profit;
+        }
 
         async function fetchData() {
             try {
@@ -113,26 +140,34 @@
                 allData = await response.json();
                 renderTable(allData);
                 renderStats(allData);
-            } catch (error) { console.error('Error:', error); }
+            } catch (error) { console.error('抓取失敗', error); }
         }
 
         function renderTable(data) {
             const tbody = document.getElementById('tableBody');
-            tbody.innerHTML = data.map(item => `
-                <tr class="hover:bg-slate-50/50 transition">
+            tbody.innerHTML = data.map((item, index) => `
+                <tr class="hover:bg-slate-50/80 transition group">
                     <td class="px-8 py-5">
                         <p class="font-bold text-slate-800">${item.name}</p>
-                        <p class="text-[10px] text-indigo-500 uppercase font-bold tracking-wider">${item.ig}</p>
+                        <p class="text-[10px] text-indigo-500 font-bold uppercase tracking-wider">${item.ig || '@unknown'}</p>
+                    </td>
+                    <td class="px-6 py-5">
+                        <div class="flex items-center gap-2">
+                            <div class="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-400">${item.referrer ? item.referrer.charAt(0) : '?'}</div>
+                            <span class="text-sm font-medium text-slate-600">${item.referrer || '--'}</span>
+                        </div>
                     </td>
                     <td class="px-6 py-5 text-right">
-                        <p class="text-xs font-bold text-slate-700">$${(Number(item.sales_amount)||0).toLocaleString()}</p>
-                        <p class="text-[10px] font-bold text-emerald-500 tracking-tighter">$${(Number(item.profit_amount)||0).toLocaleString()}</p>
+                        <p class="text-xs font-bold text-slate-400 tracking-tighter">Sale: $${(Number(item.sales_amount)||0).toLocaleString()}</p>
+                        <p class="text-sm font-black text-emerald-600 tracking-tight">Earn: $${(Number(item.profit_amount)||0).toLocaleString()}</p>
                     </td>
                     <td class="px-6 py-5 text-center">
                         <span class="status-pill ${item.status_labor === '已回簽' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}">${item.status_labor}</span>
                     </td>
-                    <td class="px-6 py-5 text-right">
-                        <button onclick="alert('備註：'+'${item.remark}')" class="p-2 hover:bg-slate-100 rounded-lg transition text-slate-400"><i data-lucide="more-horizontal" size="16"></i></button>
+                    <td class="px-8 py-5 text-right">
+                        <button onclick="openModal('edit', ${index})" class="text-indigo-600 hover:bg-indigo-600 hover:text-white px-4 py-2 rounded-xl text-xs font-bold border border-indigo-100 transition-all">
+                            卡片詳情 / 編輯
+                        </button>
                     </td>
                 </tr>
             `).join('');
@@ -143,42 +178,92 @@
             const totalSales = data.reduce((s, i) => s + (Number(i.sales_amount)||0), 0);
             const totalProfit = data.reduce((s, i) => s + (Number(i.profit_amount)||0), 0);
             document.getElementById('statsGrid').innerHTML = `
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm"><p class="text-xs font-bold text-slate-400 uppercase mb-2">本月總銷售</p><p class="text-3xl font-black text-slate-800">$${totalSales.toLocaleString()}</p></div>
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-emerald-400"><p class="text-xs font-bold text-slate-400 uppercase mb-2">預計發放分潤</p><p class="text-3xl font-black text-emerald-600">$${totalProfit.toLocaleString()}</p></div>
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm border-l-4 border-l-indigo-400"><p class="text-xs font-bold text-slate-400 uppercase mb-2">目前檔數</p><p class="text-3xl font-black text-indigo-600">${data.length} 檔</p></div>
+                <div class="bg-white p-7 rounded-3xl border border-slate-200 shadow-sm"><p class="text-[10px] font-bold text-slate-400 uppercase mb-2 tracking-widest">累積銷售總額</p><p class="text-3xl font-black text-slate-800">$${totalSales.toLocaleString()}</p></div>
+                <div class="bg-white p-7 rounded-3xl border border-slate-200 shadow-sm border-l-4 border-l-emerald-400"><p class="text-[10px] font-bold text-emerald-400 uppercase mb-2 tracking-widest">累積預計分潤</p><p class="text-3xl font-black text-emerald-600">$${totalProfit.toLocaleString()}</p></div>
+                <div class="bg-white p-7 rounded-3xl border border-slate-200 shadow-sm border-l-4 border-l-indigo-400"><p class="text-[10px] font-bold text-indigo-400 uppercase mb-2 tracking-widest">總合作檔數</p><p class="text-3xl font-black text-indigo-600">${data.length} <span class="text-sm font-normal text-slate-400">Cases</span></p></div>
             `;
         }
 
-        function openAddModal() { document.getElementById('addModal').classList.remove('invisible'); }
-        function closeAddModal() { document.getElementById('addModal').classList.add('invisible'); }
+        // 開啟彈窗 (判斷是新增還是編輯)
+        function openModal(mode, index = null) {
+            const modal = document.getElementById('dataModal');
+            const content = document.getElementById('modalContent');
+            const form = document.getElementById('dataForm');
+            
+            form.reset();
+            
+            if (mode === 'edit' && index !== null) {
+                const item = allData[index];
+                document.getElementById('modalTitle').innerText = '編輯團主資料';
+                document.getElementById('original_name').value = item.name;
+                document.getElementById('f_name').value = item.name;
+                document.getElementById('f_ig').value = item.ig;
+                document.getElementById('f_phone').value = item.phone;
+                document.getElementById('f_sales').value = item.sales_amount;
+                document.getElementById('f_profit').value = item.profit_amount;
+                document.getElementById('f_start').value = item.date_start;
+                document.getElementById('f_end').value = item.date_end;
+                document.getElementById('f_status').value = item.status_labor;
+                document.getElementById('f_referrer').value = item.referrer;
+                document.getElementById('f_remark').value = item.remark;
+            } else {
+                document.getElementById('modalTitle').innerText = '新增開團名單';
+                document.getElementById('original_name').value = '';
+            }
 
-        async function submitForm(e) {
+            modal.classList.remove('invisible');
+            setTimeout(() => content.classList.remove('translate-x-full'), 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('dataModal');
+            const content = document.getElementById('modalContent');
+            content.classList.add('translate-x-full');
+            setTimeout(() => modal.classList.add('invisible'), 300);
+        }
+
+        // 提交表單 (處理新增或編輯)
+        async function handleFormSubmit(e) {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
-            btn.innerText = '正在寫入資料庫...';
-            btn.disabled = true;
-
+            const originalName = document.getElementById('original_name').value;
             const formData = new FormData(e.target);
             const data = Object.fromEntries(formData.entries());
+            
+            btn.innerText = '正在同步雲端...';
+            btn.disabled = true;
 
             try {
-                await fetch(SHEETDB_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ data: [data] })
-                });
-                alert('新增成功！資料已導入 Google 試算表。');
-                e.target.reset();
-                closeAddModal();
+                if (originalName) {
+                    // 編輯模式: 使用 PATCH (透過 name 尋找對應列)
+                    await fetch(`${SHEETDB_URL}/name/${encodeURIComponent(originalName)}`, {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ data: data })
+                    });
+                } else {
+                    // 新增模式: 使用 POST
+                    await fetch(SHEETDB_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ data: [data] })
+                    });
+                }
+                closeModal();
                 fetchData();
-            } catch (error) { alert('新增失敗，請檢查網路連線。'); }
-            btn.innerText = '確認新增名單';
+            } catch (error) { alert('同步失敗，請檢查網路！'); }
+            
+            btn.innerText = '儲存變更並同步雲端';
             btn.disabled = false;
         }
 
         function filterTable() {
             const val = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = allData.filter(i => i.name.toLowerCase().includes(val) || i.ig.toLowerCase().includes(val));
+            const filtered = allData.filter(i => 
+                i.name.toLowerCase().includes(val) || 
+                (i.ig && i.ig.toLowerCase().includes(val)) ||
+                (i.referrer && i.referrer.toLowerCase().includes(val))
+            );
             renderTable(filtered);
         }
 
