@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KOLaborate | 進階財務管理系統</title>
+    <title>KOLaborate | 專業財務管理系統</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f1f5f9; color: #1e293b; }
         .status-pill { padding: 4px 12px; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; }
-        .card-shadow { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05); }
-        .drawer-blur { backdrop-filter: blur(4px); background-color: rgba(15, 23, 42, 0.5); }
+        .currency-font { font-family: 'Inter', sans-serif; font-weight: 700; }
+        .modal-blur { backdrop-filter: blur(6px); background-color: rgba(15, 23, 42, 0.4); }
     </style>
 </head>
 <body>
@@ -19,19 +19,17 @@
     <div class="min-h-screen flex flex-col">
         <nav class="bg-white border-b border-slate-200 px-8 py-4 flex justify-between items-center sticky top-0 z-40 shadow-sm">
             <div class="flex items-center gap-3">
-                <div class="bg-indigo-600 p-2 rounded-xl text-white shadow-lg">
-                    <i data-lucide="bar-chart-3" size="24"></i>
+                <div class="bg-indigo-600 p-2 rounded-xl text-white shadow-lg shadow-indigo-200">
+                    <i data-lucide="layout-dashboard" size="24"></i>
                 </div>
                 <div>
-                    <h1 class="text-xl font-bold tracking-tight text-slate-800">KOLaborate</h1>
-                    <p class="text-[10px] text-indigo-500 font-bold uppercase tracking-widest leading-none">Pro Management</p>
+                    <h1 class="text-xl font-bold text-slate-800">KOLaborate</h1>
+                    <p class="text-[10px] text-indigo-500 font-bold uppercase tracking-widest leading-none">Management Pro</p>
                 </div>
             </div>
-            <div class="flex items-center gap-4">
-                <button onclick="openModal('add')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition flex items-center gap-2 shadow-md">
-                    <i data-lucide="plus-circle" size="18"></i> 新增開團名單
-                </button>
-            </div>
+            <button onclick="openModal('add')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition flex items-center gap-2 shadow-md">
+                <i data-lucide="plus" size="18"></i> 新增開團名單
+            </button>
         </nav>
 
         <main class="flex-1 p-8 space-y-6 max-w-7xl mx-auto w-full">
@@ -48,11 +46,11 @@
                     <table class="w-full text-left">
                         <thead>
                             <tr class="text-[11px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100">
-                                <th class="px-8 py-4">團主資訊</th>
-                                <th class="px-6 py-4">負責人</th>
-                                <th class="px-6 py-4 text-right">銷售/分潤 (20%)</th>
-                                <th class="px-6 py-4 text-center">狀態</th>
-                                <th class="px-8 py-4 text-right">管理</th>
+                                <th class="px-8 py-5">團主資訊</th>
+                                <th class="px-6 py-5">負責人 (Referrer)</th>
+                                <th class="px-6 py-5 text-right">銷售 / 分潤 (20%)</th>
+                                <th class="px-6 py-5 text-center">勞報狀態</th>
+                                <th class="px-8 py-5 text-center">操作</th>
                             </tr>
                         </thead>
                         <tbody id="tableBody" class="divide-y divide-slate-100"></tbody>
@@ -63,39 +61,42 @@
     </div>
 
     <div id="dataModal" class="fixed inset-0 z-50 invisible transition-all duration-300">
-        <div class="absolute inset-0 drawer-blur" onclick="closeModal()"></div>
+        <div class="absolute inset-0 modal-blur" onclick="closeModal()"></div>
         <div class="absolute right-0 top-0 bottom-0 w-full max-w-md bg-white shadow-2xl transition-transform duration-300 translate-x-full p-8 overflow-y-auto" id="modalContent">
             <div class="flex justify-between items-center mb-8">
-                <h2 id="modalTitle" class="text-2xl font-bold text-slate-800">新增名單</h2>
-                <button onclick="closeModal()" class="p-2 hover:bg-slate-100 rounded-full transition text-slate-400"><i data-lucide="x"></i></button>
+                <h2 id="modalTitle" class="text-2xl font-bold text-slate-800">資料管理</h2>
+                <button onclick="closeModal()" class="p-2 hover:bg-slate-100 rounded-full text-slate-400"><i data-lucide="x"></i></button>
             </div>
             
             <form id="dataForm" onsubmit="handleFormSubmit(event)" class="space-y-6">
                 <input type="hidden" name="original_name" id="original_name">
                 
                 <div class="space-y-4">
-                    <div class="p-4 bg-slate-50 rounded-2xl space-y-4">
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase">基本資料</label>
-                        <input type="text" name="name" id="f_name" placeholder="團主姓名" required class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-                        <input type="text" name="ig" id="f_ig" placeholder="IG 帳號 (@...)" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-                        <input type="text" name="phone" id="f_phone" placeholder="聯絡電話" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+                    <div class="p-5 bg-slate-50 rounded-2xl border border-slate-100 space-y-4">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase">KOL 基本資訊</p>
+                        <input type="text" name="name" id="f_name" placeholder="姓名" required class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+                        <input type="text" name="ig" id="f_ig" placeholder="IG 帳號" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm outline-none">
+                        <input type="text" name="phone" id="f_phone" placeholder="電話" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm outline-none">
                     </div>
 
-                    <div class="p-4 bg-blue-50/50 rounded-2xl space-y-4">
-                        <label class="block text-[10px] font-bold text-blue-400 uppercase">財務資訊 (自動計算分潤)</label>
-                        <div class="space-y-2">
-                            <span class="text-xs text-slate-500">銷售金額</span>
-                            <input type="number" name="sales_amount" id="f_sales" oninput="autoCalcProfit(this.value)" placeholder="請輸入銷售金額" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 outline-none font-bold">
-                        </div>
-                        <div class="space-y-2">
-                            <span class="text-xs text-slate-500">分潤金額 (20%)</span>
-                            <input type="number" name="profit_amount" id="f_profit" readonly class="w-full bg-slate-100 border border-slate-200 rounded-xl p-3 text-sm text-emerald-600 font-bold outline-none cursor-not-allowed">
+                    <div class="p-5 bg-emerald-50/50 rounded-2xl border border-emerald-100 space-y-4">
+                        <p class="text-[10px] font-bold text-emerald-600 uppercase">財務結算 (自動計算 20%)</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-[10px] text-slate-400">銷售額</label>
+                                <input type="number" name="sales_amount" id="f_sales" oninput="autoCalcProfit(this.value)" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm font-bold outline-none">
+                            </div>
+                            <div>
+                                <label class="text-[10px] text-slate-400">分潤額 (20%)</label>
+                                <input type="number" name="profit_amount" id="f_profit" readonly class="w-full bg-slate-100 border border-slate-200 rounded-xl p-3 text-sm font-bold text-emerald-600 outline-none">
+                            </div>
                         </div>
                     </div>
 
-                    <div class="p-4 bg-slate-50 rounded-2xl space-y-4">
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase">流程資訊</label>
-                        <div class="grid grid-cols-2 gap-4">
+                    <div class="p-5 bg-indigo-50/50 rounded-2xl border border-indigo-100 space-y-4">
+                        <p class="text-[10px] font-bold text-indigo-500 uppercase">開發與排期</p>
+                        <input type="text" name="referrer" id="f_referrer" placeholder="負責邀約人" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm outline-none">
+                        <div class="grid grid-cols-2 gap-3">
                             <input type="text" name="date_start" id="f_start" placeholder="開始日期" class="bg-white border border-slate-200 rounded-xl p-3 text-sm outline-none">
                             <input type="text" name="date_end" id="f_end" placeholder="結束日期" class="bg-white border border-slate-200 rounded-xl p-3 text-sm outline-none">
                         </div>
@@ -104,14 +105,13 @@
                             <option value="已發送">已發送</option>
                             <option value="已回簽">已回簽</option>
                         </select>
-                        <input type="text" name="referrer" id="f_referrer" placeholder="負責邀約人" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm outline-none">
                     </div>
 
-                    <textarea name="remark" id="f_remark" placeholder="備註說明..." rows="3" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 text-sm outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                    <textarea name="remark" id="f_remark" placeholder="備註紀錄..." rows="3" class="w-full bg-slate-100 border-none rounded-2xl p-4 text-sm outline-none"></textarea>
                 </div>
 
-                <button type="submit" id="submitBtn" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-bold shadow-xl shadow-indigo-100 hover:bg-indigo-700 transition transform active:scale-95">
-                    儲存變更並同步雲端
+                <button type="submit" id="submitBtn" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-bold shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition active:scale-95">
+                    儲存資料並更新雲端
                 </button>
             </form>
         </div>
@@ -121,17 +121,15 @@
         lucide.createIcons();
 
         // ---------------------------------------------------------
-        // 重要：請在此貼上妳的 SheetDB API 網址
+        // 重要：貼上妳的 SheetDB API 網址
         // ---------------------------------------------------------
         const SHEETDB_URL = 'https://sheetdb.io/api/v1/cyqmbi2i9zshu'; 
 
         let allData = [];
 
-        // 自動計算 20% 分潤
         function autoCalcProfit(val) {
             const sales = parseFloat(val) || 0;
-            const profit = Math.round(sales * 0.2); // 銷售額的 20%
-            document.getElementById('f_profit').value = profit;
+            document.getElementById('f_profit').value = Math.round(sales * 0.2);
         }
 
         async function fetchData() {
@@ -152,21 +150,18 @@
                         <p class="text-[10px] text-indigo-500 font-bold uppercase tracking-wider">${item.ig || '@unknown'}</p>
                     </td>
                     <td class="px-6 py-5">
-                        <div class="flex items-center gap-2">
-                            <div class="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-400">${item.referrer ? item.referrer.charAt(0) : '?'}</div>
-                            <span class="text-sm font-medium text-slate-600">${item.referrer || '--'}</span>
-                        </div>
+                        <span class="text-sm font-medium text-slate-600">${item.referrer || '<span class="text-slate-300">未設定</span>'}</span>
                     </td>
                     <td class="px-6 py-5 text-right">
-                        <p class="text-xs font-bold text-slate-400 tracking-tighter">Sale: $${(Number(item.sales_amount)||0).toLocaleString()}</p>
-                        <p class="text-sm font-black text-emerald-600 tracking-tight">Earn: $${(Number(item.profit_amount)||0).toLocaleString()}</p>
+                        <p class="text-[10px] font-bold text-slate-400">$${(Number(item.sales_amount)||0).toLocaleString()}</p>
+                        <p class="text-sm font-black text-emerald-600 tracking-tighter">$${(Number(item.profit_amount)||0).toLocaleString()}</p>
                     </td>
                     <td class="px-6 py-5 text-center">
                         <span class="status-pill ${item.status_labor === '已回簽' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}">${item.status_labor}</span>
                     </td>
-                    <td class="px-8 py-5 text-right">
-                        <button onclick="openModal('edit', ${index})" class="text-indigo-600 hover:bg-indigo-600 hover:text-white px-4 py-2 rounded-xl text-xs font-bold border border-indigo-100 transition-all">
-                            卡片詳情 / 編輯
+                    <td class="px-8 py-5 text-center">
+                        <button onclick="openModal('edit', ${index})" class="p-2.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-all">
+                            <i data-lucide="edit-3" size="20"></i>
                         </button>
                     </td>
                 </tr>
@@ -175,26 +170,23 @@
         }
 
         function renderStats(data) {
-            const totalSales = data.reduce((s, i) => s + (Number(i.sales_amount)||0), 0);
-            const totalProfit = data.reduce((s, i) => s + (Number(i.profit_amount)||0), 0);
+            const sales = data.reduce((s, i) => s + (Number(i.sales_amount)||0), 0);
+            const profit = data.reduce((s, i) => s + (Number(i.profit_amount)||0), 0);
             document.getElementById('statsGrid').innerHTML = `
-                <div class="bg-white p-7 rounded-3xl border border-slate-200 shadow-sm"><p class="text-[10px] font-bold text-slate-400 uppercase mb-2 tracking-widest">累積銷售總額</p><p class="text-3xl font-black text-slate-800">$${totalSales.toLocaleString()}</p></div>
-                <div class="bg-white p-7 rounded-3xl border border-slate-200 shadow-sm border-l-4 border-l-emerald-400"><p class="text-[10px] font-bold text-emerald-400 uppercase mb-2 tracking-widest">累積預計分潤</p><p class="text-3xl font-black text-emerald-600">$${totalProfit.toLocaleString()}</p></div>
-                <div class="bg-white p-7 rounded-3xl border border-slate-200 shadow-sm border-l-4 border-l-indigo-400"><p class="text-[10px] font-bold text-indigo-400 uppercase mb-2 tracking-widest">總合作檔數</p><p class="text-3xl font-black text-indigo-600">${data.length} <span class="text-sm font-normal text-slate-400">Cases</span></p></div>
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm"><p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">本月總銷售</p><p class="text-3xl font-black text-slate-800">$${sales.toLocaleString()}</p></div>
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm border-l-4 border-l-emerald-400"><p class="text-[10px] font-bold text-emerald-500 uppercase tracking-widest mb-1">預計總分潤</p><p class="text-3xl font-black text-emerald-600">$${profit.toLocaleString()}</p></div>
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm border-l-4 border-l-indigo-400"><p class="text-[10px] font-bold text-indigo-500 uppercase tracking-widest mb-1">目前檔數</p><p class="text-3xl font-black text-indigo-600">${data.length} <span class="text-sm font-normal text-slate-400">Cases</span></p></div>
             `;
         }
 
-        // 開啟彈窗 (判斷是新增還是編輯)
         function openModal(mode, index = null) {
             const modal = document.getElementById('dataModal');
             const content = document.getElementById('modalContent');
-            const form = document.getElementById('dataForm');
+            document.getElementById('dataForm').reset();
             
-            form.reset();
-            
-            if (mode === 'edit' && index !== null) {
+            if (mode === 'edit') {
                 const item = allData[index];
-                document.getElementById('modalTitle').innerText = '編輯團主資料';
+                document.getElementById('modalTitle').innerText = '編輯名單資料';
                 document.getElementById('original_name').value = item.name;
                 document.getElementById('f_name').value = item.name;
                 document.getElementById('f_ig').value = item.ig;
@@ -222,27 +214,23 @@
             setTimeout(() => modal.classList.add('invisible'), 300);
         }
 
-        // 提交表單 (處理新增或編輯)
         async function handleFormSubmit(e) {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
             const originalName = document.getElementById('original_name').value;
-            const formData = new FormData(e.target);
-            const data = Object.fromEntries(formData.entries());
+            const data = Object.fromEntries(new FormData(e.target).entries());
             
-            btn.innerText = '正在同步雲端...';
+            btn.innerText = '正在雲端存檔...';
             btn.disabled = true;
 
             try {
                 if (originalName) {
-                    // 編輯模式: 使用 PATCH (透過 name 尋找對應列)
                     await fetch(`${SHEETDB_URL}/name/${encodeURIComponent(originalName)}`, {
                         method: 'PATCH',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ data: data })
                     });
                 } else {
-                    // 新增模式: 使用 POST
                     await fetch(SHEETDB_URL, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -251,16 +239,16 @@
                 }
                 closeModal();
                 fetchData();
-            } catch (error) { alert('同步失敗，請檢查網路！'); }
+            } catch (error) { alert('同步失敗！'); }
             
-            btn.innerText = '儲存變更並同步雲端';
+            btn.innerText = '儲存資料並更新雲端';
             btn.disabled = false;
         }
 
         function filterTable() {
             const val = document.getElementById('searchInput').value.toLowerCase();
             const filtered = allData.filter(i => 
-                i.name.toLowerCase().includes(val) || 
+                (i.name && i.name.toLowerCase().includes(val)) || 
                 (i.ig && i.ig.toLowerCase().includes(val)) ||
                 (i.referrer && i.referrer.toLowerCase().includes(val))
             );
