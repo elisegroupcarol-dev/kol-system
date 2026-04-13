@@ -29,9 +29,19 @@
                     <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">Annual Performance & Audit</p>
                 </div>
             </div>
-            <button onclick="openModal('add')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition flex items-center gap-2 shadow-md">
-                <i data-lucide="plus" size="18"></i> 新增開團名單
-            </button>
+          <div class="flex items-center gap-4">
+    <div class="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200 shadow-sm">
+        <i data-lucide="user-circle" size="16" class="text-indigo-500"></i>
+        <span id="userDisplay" class="text-xs font-bold text-slate-600">讀取中...</span>
+        <button onclick="logout()" class="ml-1 p-1 text-slate-300 hover:text-red-500 transition-colors" title="登出系統">
+            <i data-lucide="log-out" size="14"></i>
+        </button>
+    </div>
+    
+    <button onclick="openModal('add')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition flex items-center gap-2 shadow-md">
+        <i data-lucide="plus" size="18"></i> 新增開團名單
+    </button>
+</div>
         </nav>
 
         <main class="flex-1 p-8 space-y-6 max-w-7xl mx-auto w-full">
@@ -153,29 +163,43 @@
 
     <script>
         lucide.createIcons();
-        // --- 這裡就是貼上門禁代碼的地方 ---
-        const USERS = {
-            "tange": "88888",   // 帳號: 密碼
-            "carol": "790130",
-            "nick": "791211"
-        };
+    // --- 門禁系統 V2 (關閉即登出版) ---
+const USERS = {
+    "tange": "88888",
+    "carol": "790130",
+    "nick": "791211"
+};
 
-        function checkLogin() {
-            const savedUser = localStorage.getItem('kol_user');
-            if (!savedUser) {
-                const user = prompt("請輸入管理員帳號：");
-                const pass = prompt("請輸入管理員密碼：");
-                
-                if (USERS[user] && USERS[user] === pass) {
-                    localStorage.setItem('kol_user', user);
-                    alert("登入成功，歡迎 " + user);
-                } else {
-                    alert("帳號或密碼錯誤！");
-                    window.location.href = "about:blank"; 
-                }
-            }
+function checkLogin() {
+    // 改用 sessionStorage，只要關閉瀏覽器分頁就會失效
+    const savedUser = sessionStorage.getItem('kol_user'); 
+    
+    if (!savedUser) {
+        const user = prompt("請輸入管理員帳號：");
+        const pass = prompt("請輸入管理員密碼：");
+        
+        if (USERS[user] && USERS[user] === pass) {
+            sessionStorage.setItem('kol_user', user);
+            document.getElementById('userDisplay').innerText = user;
+            alert("登入成功，歡迎 " + user);
+        } else {
+            alert("帳號或密碼錯誤！");
+            window.location.href = "about:blank"; 
         }
-        checkLogin(); 
+    } else {
+        document.getElementById('userDisplay').innerText = savedUser;
+    }
+}
+
+function logout() {
+    if (confirm("確定要登出系統嗎？")) {
+        sessionStorage.removeItem('kol_user');
+        location.reload(); 
+    }
+}
+
+checkLogin(); 
+// ---------------------------------
         // ------------------------------
         
         // --- 請務必在這裡更換為妳的 SheetDB API 網址 ---
