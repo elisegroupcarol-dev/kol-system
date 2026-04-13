@@ -153,6 +153,30 @@
 
     <script>
         lucide.createIcons();
+        // --- 這裡就是貼上門禁代碼的地方 ---
+        const USERS = {
+            "admin": "123456",   // 帳號: 密碼
+            "kelly": "789012",
+            "elise": "group2026"
+        };
+
+        function checkLogin() {
+            const savedUser = localStorage.getItem('kol_user');
+            if (!savedUser) {
+                const user = prompt("請輸入管理員帳號：");
+                const pass = prompt("請輸入管理員密碼：");
+                
+                if (USERS[user] && USERS[user] === pass) {
+                    localStorage.setItem('kol_user', user);
+                    alert("登入成功，歡迎 " + user);
+                } else {
+                    alert("帳號或密碼錯誤！");
+                    window.location.href = "about:blank"; 
+                }
+            }
+        }
+        checkLogin(); 
+        // ------------------------------
         
         // --- 請務必在這裡更換為妳的 SheetDB API 網址 ---
         const SHEETDB_URL = 'https://sheetdb.io/api/v1/cyqmbi2i9zshu'; 
