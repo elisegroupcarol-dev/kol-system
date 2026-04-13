@@ -163,7 +163,7 @@
 
     <script>
         lucide.createIcons();
-    // --- 門禁系統 V2 (關閉即登出版) ---
+// --- 門禁系統 V2 (手機相容優化版) ---
 const USERS = {
     "tange": "88888",
     "carol": "790130",
@@ -171,23 +171,35 @@ const USERS = {
 };
 
 function checkLogin() {
-    // 改用 sessionStorage，只要關閉瀏覽器分頁就會失效
+    // 使用 sessionStorage，關閉分頁即登出
     const savedUser = sessionStorage.getItem('kol_user'); 
     
     if (!savedUser) {
-        const user = prompt("請輸入管理員帳號：");
-        const pass = prompt("請輸入管理員密碼：");
+        let user = prompt("請輸入管理員帳號：");
+        let pass = prompt("請輸入管理員密碼：");
         
-        if (USERS[user] && USERS[user] === pass) {
+        // 【手機版關鍵修正】：過濾空格並強制轉小寫，防止鍵盤自動大寫
+        if (user) user = user.trim().toLowerCase();
+        if (pass) pass = pass.trim();
+        
+        if (user && USERS[user] && USERS[user] === pass) {
             sessionStorage.setItem('kol_user', user);
-            document.getElementById('userDisplay').innerText = user;
             alert("登入成功，歡迎 " + user);
+            // 延遲更新 UI，確保手機讀取到網頁標籤
+            setTimeout(() => {
+                const display = document.getElementById('userDisplay');
+                if (display) display.innerText = user;
+            }, 300);
         } else {
-            alert("帳號或密碼錯誤！");
+            alert("帳號或密碼錯誤！請注意英文大小寫。");
             window.location.href = "about:blank"; 
         }
     } else {
-        document.getElementById('userDisplay').innerText = savedUser;
+        // 已登入狀態下的 UI 更新
+        setTimeout(() => {
+            const display = document.getElementById('userDisplay');
+            if (display) display.innerText = savedUser;
+        }, 300);
     }
 }
 
@@ -198,9 +210,9 @@ function logout() {
     }
 }
 
+// 執行門禁檢查
 checkLogin(); 
 // ---------------------------------
-        // ------------------------------
         
         // --- 請務必在這裡更換為妳的 SheetDB API 網址 ---
         const SHEETDB_URL = 'https://sheetdb.io/api/v1/cyqmbi2i9zshu'; 
