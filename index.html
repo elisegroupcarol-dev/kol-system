@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KOLaborate | 2026 年度財務與二審管理系統</title>
+    <title>KOLaborate | 專業財務與二審管理系統</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -74,7 +74,7 @@
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] max-w-5xl bg-white rounded-3xl shadow-2xl p-6">
             <div class="flex justify-between items-center mb-6">
                 <h3 id="calTitle" class="text-2xl font-black text-slate-800">月排程視圖</h3>
-                <button onclick="toggleCalendar()" class="p-2 hover:bg-slate-100 rounded-full text-slate-400"><i data-lucide="x"></i></button>
+                <button onclick="toggleCalendar()" class="text-slate-400"><i data-lucide="x"></i></button>
             </div>
             <div class="grid grid-cols-7 gap-1 text-center text-[10px] font-black text-slate-400 uppercase mb-1">
                 <div>週一</div><div>週二</div><div>週三</div><div>週四</div><div>週五</div><div>週六</div><div class="text-red-400">週日</div>
@@ -93,29 +93,30 @@
             
             <form id="dataForm" onsubmit="handleFormSubmit(event)" class="space-y-6">
                 <input type="hidden" name="original_name" id="original_name">
+                
                 <div class="space-y-4">
-                    <div class="p-5 bg-slate-50 rounded-2xl border space-y-4">
-                        <label class="text-[10px] font-bold text-slate-400 uppercase">基本聯繫</label>
+                    <div class="p-5 bg-slate-50 rounded-2xl border border-slate-100 space-y-4 shadow-sm">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">基本聯繫</label>
                         <input type="text" name="name" id="f_name" placeholder="姓名" required class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-                        <input type="text" name="ig" id="f_ig" placeholder="IG 帳號" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm outline-none">
+                        <input type="text" name="ig" id="f_ig" placeholder="IG 帳號 (@...)" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm outline-none">
                         <input type="text" name="phone" id="f_phone" placeholder="電話號碼" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm outline-none">
                     </div>
                     
-                    <div class="p-5 bg-emerald-50/50 rounded-2xl border border-emerald-100 space-y-4">
-                        <label class="text-[10px] font-bold text-emerald-600 uppercase">財務結算與審核</label>
+                    <div class="p-5 bg-emerald-50/50 rounded-2xl border border-emerald-100 space-y-4 shadow-sm">
+                        <label class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">財務結算與審核</label>
                         <div class="grid grid-cols-2 gap-3">
                             <div>
-                                <label class="text-[9px] text-slate-400 mb-1 block">銷售金額</label>
-                                <input type="number" name="sales_amount" id="f_sales" oninput="autoCalcProfit(this.value)" class="w-full bg-white border rounded-xl p-3 text-sm font-bold outline-none">
+                                <label class="text-[9px] text-slate-400 mb-1 block font-bold">銷售金額</label>
+                                <input type="number" name="sales_amount" id="f_sales" oninput="autoCalcProfit(this.value)" placeholder="0" class="w-full bg-white border rounded-xl p-3 text-sm font-bold outline-none">
                             </div>
                             <div>
-                                <label class="text-[9px] text-slate-400 mb-1 block">分潤 (20%)</label>
+                                <label class="text-[9px] text-slate-400 mb-1 block font-bold">分潤 (20%)</label>
                                 <input type="number" name="profit_amount" id="f_profit" readonly class="w-full bg-slate-100 border rounded-xl p-3 text-sm font-bold text-emerald-600">
                             </div>
                         </div>
-                        <div class="space-y-2 pt-2">
-                            <label class="text-[9px] text-slate-400 font-bold block">二審財務狀態</label>
-                            <select name="audit_status" id="f_audit" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm font-bold outline-none">
+                        <div class="space-y-2 pt-2 border-t border-emerald-100">
+                            <label class="text-[9px] text-slate-400 font-bold block">二審財務狀態 (審核結果)</label>
+                            <select name="audit_status" id="f_audit" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm font-bold outline-none text-slate-700">
                                 <option value="待審核">待審核</option>
                                 <option value="結算無誤ok">結算無誤ok</option>
                                 <option value="金額有誤 ng">金額有誤 ng</option>
@@ -123,33 +124,43 @@
                         </div>
                     </div>
 
-                    <div class="p-5 bg-indigo-50/50 rounded-2xl border border-indigo-100 space-y-4">
-                        <label class="text-[10px] font-bold text-indigo-500 uppercase">排期與狀態</label>
+                    <div class="p-5 bg-indigo-50/50 rounded-2xl border border-indigo-100 space-y-4 shadow-sm">
+                        <label class="text-[10px] font-bold text-indigo-500 uppercase tracking-widest">排期與勞報狀態</label>
                         <input type="text" name="referrer" id="f_referrer" placeholder="負責邀約人" class="w-full bg-white border rounded-xl p-3 text-sm outline-none">
                         <div class="grid grid-cols-2 gap-3">
-                            <input type="date" name="date_start" id="f_start" required class="w-full bg-white border rounded-xl p-3 text-sm outline-none">
-                            <input type="date" name="date_end" id="f_end" required class="w-full bg-white border rounded-xl p-3 text-sm outline-none">
+                            <div>
+                                <label class="text-[9px] text-slate-400 mb-1 block font-bold">開始日期</label>
+                                <input type="date" name="date_start" id="f_start" required class="w-full bg-white border rounded-xl p-3 text-sm outline-none">
+                            </div>
+                            <div>
+                                <label class="text-[9px] text-slate-400 mb-1 block font-bold">結束日期</label>
+                                <input type="date" name="date_end" id="f_end" required class="w-full bg-white border rounded-xl p-3 text-sm outline-none">
+                            </div>
                         </div>
-                        <select name="status_labor" id="f_status" class="w-full bg-white border rounded-xl p-3 text-sm outline-none">
+                        <select name="status_labor" id="f_status" class="w-full bg-white border rounded-xl p-3 text-sm outline-none font-bold text-slate-600">
                             <option value="未發送">未發送</option>
                             <option value="已發送">已發送</option>
                             <option value="已回簽">已回簽</option>
                         </select>
                     </div>
+
+                    <textarea name="remark" id="f_remark" placeholder="備註紀錄與不合格原因..." rows="3" class="w-full bg-slate-100 border-none rounded-2xl p-4 text-sm outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
                 </div>
-                <button type="submit" id="submitBtn" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-bold shadow-lg transition hover:bg-indigo-700 active:scale-95">儲存資料並更新雲端</button>
+                <button type="submit" id="submitBtn" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-bold shadow-lg transition hover:bg-indigo-700 active:scale-95">儲存並同步至雲端</button>
             </form>
         </div>
     </div>
 
     <script>
         lucide.createIcons();
-        const SHEETDB_URL = 'https://sheetdb.io/api/v1/cyqmbi2i9zshu'; // <--- 請務必貼上妳的 API 網址
+        
+        // --- 請務必在這裡更換為妳的 SheetDB API 網址 ---
+        const SHEETDB_URL = 'https://sheetdb.io/api/v1/cyqmbi2i9zshu'; 
 
         let allData = [];
         let currentMonth = 'All';
 
-        // 日期正規化邏輯
+        // 月份拆解與正序邏輯
         function getMonthKey(dateStr) {
             if (!dateStr) return null;
             const parts = dateStr.split(/[\/\-]/);
@@ -163,7 +174,7 @@
                 allData = await response.json();
                 renderTabs(allData);
                 filterAndRender();
-            } catch (error) { console.error('抓取失敗', error); }
+            } catch (error) { console.error('同步失敗', error); }
         }
 
         function renderTabs(data) {
@@ -211,7 +222,7 @@
                         <span class="status-pill inline-block ${item.status_labor === '已回簽' ? 'bg-green-100 text-green-700' : (item.status_labor === '已發送' ? 'bg-blue-100 text-blue-700' : 'bg-red-100 text-red-700')}">${item.status_labor}</span>
                     </td>
                     <td class="px-8 py-5 text-center">
-                        <button onclick="openModal('edit', ${allData.indexOf(item)})" class="p-2.5 text-slate-300 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-all">
+                        <button onclick="openModal('edit', ${allData.indexOf(item)})" class="p-2.5 text-slate-300 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-all shadow-sm">
                             <i data-lucide="edit-3" size="22"></i>
                         </button>
                     </td>
@@ -224,9 +235,9 @@
             const sales = data.reduce((s, i) => s + (Number(i.sales_amount)||0), 0);
             const profit = data.reduce((s, i) => s + (Number(i.profit_amount)||0), 0);
             document.getElementById('statsGrid').innerHTML = `
-                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm"><p class="text-[10px] font-bold text-slate-400 uppercase mb-1">本期總銷售</p><p class="text-3xl font-black text-slate-800">$${sales.toLocaleString()}</p></div>
-                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm border-l-4 border-l-emerald-400"><p class="text-[10px] font-bold text-emerald-500 uppercase mb-1">預計總分潤</p><p class="text-3xl font-black text-emerald-600">$${profit.toLocaleString()}</p></div>
-                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm border-l-4 border-l-indigo-400"><p class="text-[10px] font-bold text-indigo-500 uppercase mb-1">目前總檔數</p><p class="text-3xl font-black text-indigo-600">${data.length} Cases</p></div>
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm"><p class="text-[10px] font-bold text-slate-400 uppercase mb-1 tracking-widest">本期累積銷售</p><p class="text-3xl font-black text-slate-800">$${sales.toLocaleString()}</p></div>
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm border-l-4 border-l-emerald-400"><p class="text-[10px] font-bold text-emerald-500 uppercase mb-1 tracking-widest">累積預計分潤</p><p class="text-3xl font-black text-emerald-600">$${profit.toLocaleString()}</p></div>
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm border-l-4 border-l-indigo-400"><p class="text-[10px] font-bold text-indigo-500 uppercase mb-1 tracking-widest">本月合作檔數</p><p class="text-3xl font-black text-indigo-600">${data.length} Cases</p></div>
             `;
         }
 
@@ -252,7 +263,8 @@
             for(let d=1; d<=daysInMonth; d++) {
                 let events = '';
                 filteredKOLs.forEach((kol, idx) => {
-                    const s = parseInt(kol.date_start.split(/[\/\-]/)[2]);
+                    const parts = kol.date_start.split(/[\/\-]/);
+                    const s = parseInt(parts[2]);
                     const e = parseInt(kol.date_end.split(/[\/\-]/)[2]);
                     if (d >= s && d <= e) events += `<div class="event-bar" style="background-color: ${colors[idx % colors.length]}">${kol.name}</div>`;
                 });
@@ -263,15 +275,19 @@
 
         function autoCalcProfit(val) { document.getElementById('f_profit').value = Math.round((parseFloat(val) || 0) * 0.2); }
 
+        // 核心修正：開啟管理彈窗的邏輯
         function openModal(mode, index = null) {
             const modal = document.getElementById('dataModal');
             const content = document.getElementById('modalContent');
-            document.getElementById('dataForm').reset();
+            const form = document.getElementById('dataForm');
+            form.reset();
             
             if (mode === 'edit' && index !== null) {
                 const item = allData[index];
                 document.getElementById('modalTitle').innerText = '管理 KOL 詳情';
                 document.getElementById('original_name').value = item.name;
+                
+                // 填入既有資料
                 document.getElementById('f_name').value = item.name || '';
                 document.getElementById('f_ig').value = item.ig || '';
                 document.getElementById('f_phone').value = item.phone || '';
@@ -309,11 +325,19 @@
             
             btn.innerText = '正在雲端存檔...'; btn.disabled = true;
             try {
+                // 如果是編輯模式，使用 PATCH；如果是新增模式，使用 POST
                 const url = originalName ? `${SHEETDB_URL}/name/${encodeURIComponent(originalName)}` : SHEETDB_URL;
                 const method = originalName ? 'PATCH' : 'POST';
-                await fetch(url, { method: method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ data: originalName ? data : [data] }) });
-                closeModal(); fetchData();
-            } catch (error) { alert('同步失敗！'); }
+                const body = originalName ? { data: data } : { data: [data] };
+                
+                await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+                closeModal(); 
+                fetchData(); // 重新抓取資料
+            } catch (error) { alert('同步失敗，請檢查網路！'); }
             btn.innerText = '儲存資料並更新雲端'; btn.disabled = false;
         }
 
@@ -323,6 +347,7 @@
             renderTable(filtered);
         }
 
+        // 初始抓取資料
         fetchData();
     </script>
 </body>
