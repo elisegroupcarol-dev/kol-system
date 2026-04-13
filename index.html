@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KOLaborate | 專業財務與二審管理系統</title>
+    <title>TANGE KOLaborate | 專業財務與二審管理系統</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -163,7 +163,7 @@
 
     <script>
         lucide.createIcons();
-// --- 門禁系統 V2 (手機相容優化版) ---
+// --- 門禁系統 V3 (錯誤重試版) ---
 const USERS = {
     "tange": "88888",
     "carol": "790130",
@@ -177,22 +177,29 @@ function checkLogin() {
     if (!savedUser) {
         let user = prompt("請輸入管理員帳號：");
         let pass = prompt("請輸入管理員密碼：");
+
+        // 如果使用者點擊「取消」，則跳轉空白頁 (防止跳過登入進入系統)
+        if (user === null || pass === null) {
+            window.location.href = "about:blank";
+            return;
+        }
         
-        // 【手機版關鍵修正】：過濾空格並強制轉小寫，防止鍵盤自動大寫
-        if (user) user = user.trim().toLowerCase();
-        if (pass) pass = pass.trim();
+        // 過濾空格並強制轉小寫，防止鍵盤自動大寫 
+        user = user.trim().toLowerCase();
+        pass = pass.trim();
         
         if (user && USERS[user] && USERS[user] === pass) {
             sessionStorage.setItem('kol_user', user);
             alert("登入成功，歡迎 " + user);
-            // 延遲更新 UI，確保手機讀取到網頁標籤
+            // 延遲更新 UI 
             setTimeout(() => {
                 const display = document.getElementById('userDisplay');
                 if (display) display.innerText = user;
             }, 300);
         } else {
-            alert("帳號或密碼錯誤！請注意英文大小寫。");
-            window.location.href = "about:blank"; 
+            // 【關鍵修正】：不再跳轉空白頁，而是提示錯誤後再次執行 checkLogin()
+            alert("帳號或密碼錯誤！請重新輸入。");
+            checkLogin(); 
         }
     } else {
         // 已登入狀態下的 UI 更新
