@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KOLaborate | 智慧管理系統</title>
+    <title>KOLaborate | 專業管理系統 (修復版)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -112,11 +112,18 @@
                             <input type="number" name="sales_amount" id="f_sales" oninput="autoCalcProfit(this.value)" placeholder="銷售金額" class="w-full bg-white border rounded-xl p-3 text-sm font-bold outline-none">
                             <input type="number" name="profit_amount" id="f_profit" readonly class="w-full bg-slate-100 border rounded-xl p-3 text-sm font-bold text-emerald-600">
                         </div>
-                        <select name="audit_status" id="f_audit" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm font-bold outline-none">
-                            <option value="待審核">待審核</option>
-                            <option value="結算無誤ok">結算無誤ok</option>
-                            <option value="金額有誤 ng">金額有誤 ng</option>
-                        </select>
+                        <div class="grid grid-cols-2 gap-3">
+                            <select name="status_profit" id="f_status_profit" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm outline-none">
+                                <option value="計算中">計算中</option>
+                                <option value="待發放">待發放</option>
+                                <option value="已發放">已發放</option>
+                            </select>
+                            <select name="audit_status" id="f_audit" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm font-bold outline-none">
+                                <option value="待審核">待審核</option>
+                                <option value="結算無誤ok">結算無誤ok</option>
+                                <option value="金額有誤 ng">金額有誤 ng</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="p-5 bg-indigo-50/50 rounded-2xl border border-indigo-100 space-y-4">
                         <label class="text-[10px] font-bold text-indigo-500 uppercase tracking-widest">排期與勞報狀態</label>
@@ -287,6 +294,7 @@
                 document.getElementById('f_phone').value = item.phone || '';
                 document.getElementById('f_sales').value = item.sales_amount || '';
                 document.getElementById('f_profit').value = item.profit_amount || '';
+                document.getElementById('f_status_profit').value = item.status_profit || '計算中';
                 document.getElementById('f_audit').value = item.audit_status || '待審核';
                 document.getElementById('f_start').value = (item.date_start || '').replace(/\//g,'-');
                 document.getElementById('f_end').value = (item.date_end || '').replace(/\//g,'-');
@@ -324,9 +332,17 @@
                 const method = isEditing ? 'PATCH' : 'POST';
                 const body = isEditing ? { data: data } : { data: [data] };
                 
-                await fetch(url, { method: method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+                const response = await fetch(url, { method: method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error('伺服器回報錯誤: ' + errorText);
+                }
+
                 closeModal(); fetchData(); 
-            } catch (error) { alert('同步失敗！'); }
+            } catch (error) { 
+                alert('同步失敗！錯誤訊息：' + error.message); 
+            }
             btn.innerText = '儲存資料並更新雲端'; btn.disabled = false;
         }
 
