@@ -3,19 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KOLaborate | 專業管理系統 (修復版)</title>
+    <title>KOLaborate | 智慧管理系統 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f1f5f9; color: #1e293b; }
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8fafc; color: #1e293b; }
         .status-pill { padding: 4px 12px; border-radius: 9999px; font-size: 0.75rem; font-weight: 800; }
-        .tab-active { background-color: #4f46e5; color: white; shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.4); }
-        .modal-blur { backdrop-filter: blur(10px); background-color: rgba(15, 23, 42, 0.4); }
+        .tab-active { background-color: #4f46e5; color: white; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.4); }
+        .modal-blur { backdrop-filter: blur(8px); background-color: rgba(15, 23, 42, 0.4); }
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background-color: #e2e8f0; border: 1px solid #e2e8f0; }
-        .calendar-day { min-height: 100px; background-color: white; padding: 4px; overflow-y: auto; }
-        .event-bar { font-size: 10px; padding: 2px 4px; border-radius: 4px; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: bold; }
+        .calendar-day { min-height: 100px; background-color: white; padding: 6px; overflow-y: auto; }
+        .event-bar { font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: bold; border-left: 3px solid rgba(0,0,0,0.1); }
         .currency-font { font-family: 'Inter', sans-serif; font-weight: 800; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -26,15 +28,15 @@
                 <div class="bg-indigo-600 p-2 rounded-xl text-white shadow-lg"><i data-lucide="shield-check" size="24"></i></div>
                 <div>
                     <h1 class="text-xl font-bold text-slate-800 tracking-tight">KOLaborate <span class="text-indigo-600">2026</span></h1>
-                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">Campaign Control Center</p>
+                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">Smart Audit System</p>
                 </div>
             </div>
             
             <div class="flex items-center gap-4">
-                <div class="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200 shadow-sm">
+                <div class="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
                     <i data-lucide="user-circle" size="16" class="text-indigo-500"></i>
                     <span id="userDisplay" class="text-xs font-bold text-slate-600">讀取中...</span>
-                    <button onclick="logout()" class="ml-1 p-1 text-slate-300 hover:text-red-500 transition-colors" title="登出系統"><i data-lucide="log-out" size="14"></i></button>
+                    <button onclick="logout()" class="ml-1 p-1 text-slate-300 hover:text-red-500 transition-colors"><i data-lucide="log-out" size="14"></i></button>
                 </div>
                 <button onclick="openModal('add')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition flex items-center gap-2 shadow-md">
                     <i data-lucide="plus" size="18"></i> 新增開團名單
@@ -48,7 +50,7 @@
             <div class="flex flex-wrap justify-between items-center gap-4">
                 <div id="monthTabs" class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide"></div>
                 <button id="calBtn" onclick="toggleCalendar()" class="hidden bg-indigo-600 text-white px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-indigo-700 transition flex items-center gap-2 shadow-lg">
-                    <i data-lucide="calendar-range" size="18"></i> 查看排程月曆
+                    <i data-lucide="calendar-days" size="18"></i> 查看圖示化月曆
                 </button>
             </div>
 
@@ -60,7 +62,7 @@
                     </div>
                 </div>
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left min-w-[900px]">
+                    <table class="w-full text-left min-w-[1000px]">
                         <thead>
                             <tr class="text-[11px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100">
                                 <th class="px-8 py-5">團主資訊</th>
@@ -79,13 +81,13 @@
 
     <div id="calModal" class="fixed inset-0 z-50 invisible transition-all duration-300">
         <div class="absolute inset-0 modal-blur" onclick="toggleCalendar()"></div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] max-w-5xl bg-white rounded-3xl shadow-2xl p-6">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] max-w-5xl bg-white rounded-3xl shadow-2xl p-8">
             <div class="flex justify-between items-center mb-6">
                 <h3 id="calTitle" class="text-2xl font-black text-slate-800">月排程視圖</h3>
-                <button onclick="toggleCalendar()" class="text-slate-400"><i data-lucide="x"></i></button>
+                <button onclick="toggleCalendar()" class="p-2 hover:bg-slate-100 rounded-full transition-colors"><i data-lucide="x"></i></button>
             </div>
-            <div class="grid grid-cols-7 gap-1 text-center text-[10px] font-black text-slate-400 uppercase mb-1">
-                <div>週一</div><div>週二</div><div>週三</div><div>週四</div><div>週五</div><div>週六</div><div class="text-red-400">週日</div>
+            <div class="grid grid-cols-7 gap-1 text-center text-[11px] font-black text-slate-400 uppercase mb-2">
+                <div>週一</div><div>週二</div><div>週三</div><div>週四</div><div>週五</div><div>週六</div><div class="text-rose-400">週日</div>
             </div>
             <div id="calendarGrid" class="calendar-grid"></div>
         </div>
@@ -94,61 +96,79 @@
     <div id="dataModal" class="fixed inset-0 z-50 invisible transition-all duration-300">
         <div class="absolute inset-0 modal-blur" onclick="closeModal()"></div>
         <div id="modalContent" class="absolute right-0 top-0 bottom-0 w-full max-w-md bg-white shadow-2xl transition-transform duration-300 translate-x-full p-8 overflow-y-auto">
-            <h2 id="modalTitle" class="text-2xl font-bold text-slate-800 mb-8">管理詳情</h2>
+            <h2 id="modalTitle" class="text-2xl font-bold text-slate-800 mb-8 tracking-tight">KOL 詳情管理</h2>
             <form id="dataForm" onsubmit="handleFormSubmit(event)" class="space-y-6">
                 <input type="hidden" name="id" id="f_id">
                 <div class="space-y-4">
-                    <div class="p-5 bg-slate-50 rounded-2xl border space-y-4 shadow-sm">
-                        <label class="text-[10px] font-bold text-slate-400 uppercase">基本聯繫</label>
-                        <input type="text" name="name" id="f_name" placeholder="姓名" required class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+                    <div class="p-5 bg-slate-50 rounded-2xl border border-slate-100 space-y-4">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">基本聯繫</label>
+                        <input type="text" name="name" id="f_name" placeholder="團主姓名 *" required class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
                         <div class="grid grid-cols-2 gap-3">
                             <input type="text" name="ig" id="f_ig" placeholder="IG 帳號" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm outline-none">
-                            <input type="text" name="phone" id="f_phone" placeholder="電話" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm outline-none">
+                            <input type="text" name="phone" id="f_phone" placeholder="電話號碼" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm outline-none">
                         </div>
                     </div>
+
                     <div class="p-5 bg-emerald-50/50 rounded-2xl border border-emerald-100 space-y-4">
-                        <label class="text-[10px] font-bold text-emerald-600 uppercase">財務與二審</label>
+                        <label class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">財務結算與二審</label>
                         <div class="grid grid-cols-2 gap-3">
-                            <input type="number" name="sales_amount" id="f_sales" oninput="autoCalcProfit(this.value)" placeholder="銷售金額" class="w-full bg-white border rounded-xl p-3 text-sm font-bold outline-none">
-                            <input type="number" name="profit_amount" id="f_profit" readonly class="w-full bg-slate-100 border rounded-xl p-3 text-sm font-bold text-emerald-600">
+                            <div>
+                                <label class="text-[9px] text-slate-400 mb-1 block">銷售金額</label>
+                                <input type="number" name="sales_amount" id="f_sales" oninput="autoCalcProfit(this.value)" placeholder="0" class="w-full bg-white border rounded-xl p-3 text-sm font-bold outline-none">
+                            </div>
+                            <div>
+                                <label class="text-[9px] text-slate-400 mb-1 block">分潤 (20%)</label>
+                                <input type="number" name="profit_amount" id="f_profit" readonly class="w-full bg-slate-100 border rounded-xl p-3 text-sm font-bold text-emerald-600">
+                            </div>
                         </div>
-                        <div class="grid grid-cols-2 gap-3">
-                            <select name="status_profit" id="f_status_profit" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm outline-none">
-                                <option value="計算中">計算中</option>
-                                <option value="待發放">待發放</option>
-                                <option value="已發放">已發放</option>
-                            </select>
-                            <select name="audit_status" id="f_audit" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm font-bold outline-none">
-                                <option value="待審核">待審核</option>
-                                <option value="結算無誤ok">結算無誤ok</option>
-                                <option value="金額有誤 ng">金額有誤 ng</option>
-                            </select>
+                        <div class="grid grid-cols-2 gap-3 pt-2 border-t border-emerald-100">
+                            <div>
+                                <label class="text-[9px] text-slate-400 mb-1 block font-bold">分潤發放狀態</label>
+                                <select name="status_profit" id="f_status_profit" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm outline-none font-bold">
+                                    <option value="計算中">計算中</option>
+                                    <option value="待發放">待發放</option>
+                                    <option value="已發放">已發放</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-[9px] text-slate-400 mb-1 block font-bold">二審財務狀態</label>
+                                <select name="audit_status" id="f_audit" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm font-bold outline-none">
+                                    <option value="待審核">待審核</option>
+                                    <option value="結算無誤ok">結算無誤ok</option>
+                                    <option value="金額有誤 ng">金額有誤 ng</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
+
                     <div class="p-5 bg-indigo-50/50 rounded-2xl border border-indigo-100 space-y-4">
                         <label class="text-[10px] font-bold text-indigo-500 uppercase tracking-widest">排期與勞報狀態</label>
-                        <input type="text" name="referrer" id="f_referrer" placeholder="負責邀約人" class="w-full bg-white border rounded-xl p-3 text-sm outline-none">
+                        <input type="text" name="referrer" id="f_referrer" placeholder="負責邀約人" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm outline-none">
                         <div class="grid grid-cols-2 gap-3">
-                            <input type="date" name="date_start" id="f_start" required class="w-full bg-white border rounded-xl p-3 text-sm outline-none">
-                            <input type="date" name="date_end" id="f_end" required class="w-full bg-white border rounded-xl p-3 text-sm outline-none">
+                            <input type="date" name="date_start" id="f_start" required class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm outline-none">
+                            <input type="date" name="date_end" id="f_end" required class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm outline-none">
                         </div>
-                        <select name="status_labor" id="f_status" class="w-full bg-white border rounded-xl p-3 text-sm outline-none font-bold text-slate-600">
+                        <select name="status_labor" id="f_status" class="w-full bg-white border border-slate-200 rounded-xl p-3 text-sm outline-none font-bold text-slate-600">
                             <option value="未發送">未發送</option>
                             <option value="已發送">已發送</option>
                             <option value="已回簽">已回簽</option>
                         </select>
                     </div>
+
                     <textarea name="remark" id="f_remark" placeholder="備註紀錄..." rows="3" class="w-full bg-slate-100 border-none rounded-2xl p-4 text-sm outline-none"></textarea>
                 </div>
-                <button type="submit" id="submitBtn" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-bold shadow-lg transition active:scale-95">儲存資料並更新雲端</button>
+                <button type="submit" id="submitBtn" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-bold shadow-lg transition active:scale-95 hover:bg-indigo-700">儲存資料並同步雲端</button>
             </form>
         </div>
     </div>
 
     <script>
         lucide.createIcons();
+        
+        // --- 核心連線設定 (5b7k64ixp75hv) ---
         const SHEETDB_URL = 'https://sheetdb.io/api/v1/5b7k64ixp75hv'; 
 
+        // --- 門禁系統 V3 ---
         const USERS = { "tange": "88888", "carol": "790130", "nick": "791211" };
         function checkLogin() {
             const savedUser = sessionStorage.getItem('kol_user'); 
@@ -161,10 +181,10 @@
                     sessionStorage.setItem('kol_user', user);
                     alert("登入成功，歡迎 " + user);
                     setTimeout(() => { document.getElementById('userDisplay').innerText = user; }, 300);
-                } else { alert("帳號或密碼錯誤！"); checkLogin(); }
+                } else { alert("帳號或密碼錯誤！請重新輸入。"); checkLogin(); }
             } else { setTimeout(() => { document.getElementById('userDisplay').innerText = savedUser; }, 300); }
         }
-        function logout() { if (confirm("確定登出？")) { sessionStorage.removeItem('kol_user'); location.reload(); } }
+        function logout() { if (confirm("確定要登出嗎？")) { sessionStorage.removeItem('kol_user'); location.reload(); } }
         checkLogin(); 
 
         let allData = [];
@@ -182,7 +202,7 @@
                 allData = await response.json();
                 renderTabs(allData);
                 filterAndRender();
-            } catch (error) { console.error('抓取失敗', error); }
+            } catch (error) { console.error('抓取資料失敗', error); }
         }
 
         function renderTabs(data) {
@@ -190,7 +210,7 @@
             const months = ['All', ...new Set(data.map(item => getMonthKey(item.date_start)).filter(m => m !== null).sort())];
             tabsContainer.innerHTML = months.map(m => {
                 const display = m === 'All' ? '全部名單' : parseInt(m.split('/')[1]) + '月';
-                return `<button onclick="setMonth('${m}')" class="px-5 py-2 rounded-xl text-sm font-bold border transition-all ${currentMonth === m ? 'tab-active' : 'bg-white text-slate-500 hover:bg-slate-50'}">${display}</button>`;
+                return `<button onclick="setMonth('${m}')" class="px-5 py-2 rounded-xl text-sm font-bold border transition-all ${currentMonth === m ? 'tab-active' : 'bg-white text-slate-500 border-slate-200 hover:bg-slate-50'}">${display}</button>`;
             }).join('');
             document.getElementById('calBtn').classList.toggle('hidden', currentMonth === 'All');
         }
@@ -207,26 +227,27 @@
             const tbody = document.getElementById('tableBody');
             tbody.innerHTML = data.map((item, index) => {
                 const auditClass = item.audit_status === '結算無誤ok' ? 'text-green-600' : (item.audit_status === '金額有誤 ng' ? 'text-red-600' : 'text-slate-300');
+                const laborPill = item.status_labor === '已回簽' ? 'bg-green-100 text-green-700' : (item.status_labor === '已發送' ? 'bg-blue-100 text-blue-700' : 'bg-red-100 text-red-700');
                 return `
-                <tr class="hover:bg-slate-50/80 transition">
+                <tr class="hover:bg-slate-50/50 transition group">
                     <td class="px-8 py-5">
                         <p class="font-black text-slate-800 text-base leading-none mb-1">${item.name}</p>
                         <p class="text-[10px] text-indigo-500 font-bold uppercase tracking-wider">${item.ig || '@unknown'}</p>
                     </td>
                     <td class="px-6 py-5">
                         <p class="text-lg font-black text-slate-900 leading-none mb-1">${(item.date_start||'').replace(/-/g,'/')} ~ ${(item.date_end||'').replace(/-/g,'/')}</p>
-                        <p class="text-[10px] text-slate-400 font-bold">負責人：${item.referrer || '未設定'}</p>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase">負責人：${item.referrer || '未設定'}</p>
                     </td>
                     <td class="px-6 py-5 text-right">
-                        <p class="text-[10px] font-bold text-slate-400">$${(Number(item.sales_amount)||0).toLocaleString()}</p>
+                        <p class="text-[10px] font-bold text-slate-300">$${(Number(item.sales_amount)||0).toLocaleString()}</p>
                         <p class="text-base font-black text-emerald-600 currency-font">$${(Number(item.profit_amount)||0).toLocaleString()}</p>
                     </td>
                     <td class="px-6 py-5 text-center space-y-2">
                         <div class="flex items-center justify-center gap-1 text-[9px] font-black uppercase ${auditClass}">
-                            <i data-lucide="${item.audit_status === '結算無誤ok' ? 'shield-check' : (item.audit_status === '金額有誤 ng' ? 'shield-alert' : 'shield-minus')}" size="12"></i>
-                            ${item.audit_status || '未審核'}
+                            <i data-lucide="${item.audit_status === '結算無誤ok' ? 'shield-check' : 'shield-minus'}" size="12"></i>
+                            ${item.audit_status || '待審核'}
                         </div>
-                        <span class="status-pill inline-block ${item.status_labor === '已回簽' ? 'bg-green-100 text-green-700' : (item.status_labor === '已發送' ? 'bg-blue-100 text-blue-700' : 'bg-red-100 text-red-700')}">${item.status_labor}</span>
+                        <span class="status-pill inline-block ${laborPill}">${item.status_labor}</span>
                     </td>
                     <td class="px-8 py-5 text-center">
                         <button onclick="openModal('edit', ${allData.indexOf(item)})" class="p-2.5 text-slate-300 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-all shadow-sm">
@@ -242,9 +263,9 @@
             const sales = data.reduce((s, i) => s + (Number(i.sales_amount)||0), 0);
             const profit = data.reduce((s, i) => s + (Number(i.profit_amount)||0), 0);
             document.getElementById('statsGrid').innerHTML = `
-                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm border-l-4 border-l-slate-400"><p class="text-[10px] font-bold text-slate-400 uppercase mb-1">本期總銷售</p><p class="text-3xl font-black text-slate-800">$${sales.toLocaleString()}</p></div>
-                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm border-l-4 border-l-emerald-400"><p class="text-[10px] font-bold text-emerald-500 uppercase mb-1">預計總分潤</p><p class="text-3xl font-black text-emerald-600">$${profit.toLocaleString()}</p></div>
-                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm border-l-4 border-l-indigo-400"><p class="text-[10px] font-bold text-indigo-500 uppercase mb-1">本期合作檔數</p><p class="text-3xl font-black text-indigo-600">${data.length} Cases</p></div>
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm border-l-4 border-l-slate-300"><p class="text-[10px] font-bold text-slate-400 uppercase mb-1 tracking-widest">本期總銷售</p><p class="text-3xl font-black text-slate-800">$${sales.toLocaleString()}</p></div>
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm border-l-4 border-l-emerald-400"><p class="text-[10px] font-bold text-emerald-500 uppercase mb-1 tracking-widest">預計總分潤</p><p class="text-3xl font-black text-emerald-600">$${profit.toLocaleString()}</p></div>
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm border-l-4 border-l-indigo-400"><p class="text-[10px] font-bold text-indigo-500 uppercase mb-1 tracking-widest">本期合作檔數</p><p class="text-3xl font-black text-indigo-600">${data.length} Cases</p></div>
             `;
         }
 
@@ -317,31 +338,44 @@
             setTimeout(() => modal.classList.add('invisible'), 300);
         }
 
+        // --- 修復核心：強化提交邏輯與反引號語法 ---
         async function handleFormSubmit(e) {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
             const targetId = document.getElementById('f_id').value;
             const data = Object.fromEntries(new FormData(e.target).entries());
-            data.date_start = data.date_start.replace(/-/g, '/');
-            data.date_end = data.date_end.replace(/-/g, '/');
+            
+            // 正規化日期格式
+            if(data.date_start) data.date_start = data.date_start.replace(/-/g, '/');
+            if(data.date_end) data.date_end = data.date_end.replace(/-/g, '/');
             
             const isEditing = allData.some(i => i.id == targetId);
             btn.innerText = '雲端同步中...'; btn.disabled = true;
+
             try {
+                // 使用反引號樣板字串
                 const url = isEditing ? `${SHEETDB_URL}/id/${targetId}` : SHEETDB_URL;
                 const method = isEditing ? 'PATCH' : 'POST';
                 const body = isEditing ? { data: data } : { data: [data] };
                 
-                const response = await fetch(url, { method: method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+                const response = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
                 
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error('伺服器回報錯誤: ' + errorText);
-                }
+                const result = await response.json();
 
-                closeModal(); fetchData(); 
+                if (response.ok) {
+                    alert('儲存成功！資料已同步至試算表。');
+                    closeModal();
+                    fetchData(); 
+                } else {
+                    throw new Error(result.error || '伺服器拒絕寫入，請檢查試算表欄位名稱是否正確。');
+                }
             } catch (error) { 
-                alert('同步失敗！錯誤訊息：' + error.message); 
+                alert('同步失敗！具體原因：' + error.message); 
+                console.error('API Error:', error);
             }
             btn.innerText = '儲存資料並更新雲端'; btn.disabled = false;
         }
